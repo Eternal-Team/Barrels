@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Barrels.Items;
+using Barrels.Tiles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -10,23 +9,14 @@ using Terraria.ModLoader.IO;
 using TheOneLibrary.Base;
 using TheOneLibrary.Storage;
 using TheOneLibrary.Utility;
-using Barrel = Barrels.Tiles.Barrel;
 
 namespace Barrels.TileEntities
 {
-	public class TEBarrel : BaseTE, IContainer
+	public class TEDSU : BaseTE, IContainerTile
 	{
-		public const int BaseMax = 2048;
-		public int maxStoredItems = BaseMax;
-
 		public IList<Item> Items = new List<Item>();
 
-		public int StackInc
-		{
-			get { return Items.Where((x, i) => i > 0 && i < Items.Count).Sum(x => (x.modItem as StackUpgrade)?.stackInc ?? 0); }
-		}
-
-		public override bool ValidTile(Tile tile) => tile.type == mod.TileType<Barrel>() && tile.TopLeft();
+		public override bool ValidTile(Tile tile) => tile.type == mod.TileType<DSU>() && tile.TopLeft();
 
 		public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction)
 		{
@@ -39,7 +29,7 @@ namespace Barrels.TileEntities
 
 		public override void OnPlace()
 		{
-			for (int i = 0; i < 6; i++) Items.Add(new Item());
+			Items.Add(new Item());
 		}
 
 		public override void OnNetPlace() => OnPlace();
@@ -47,13 +37,6 @@ namespace Barrels.TileEntities
 		public override void OnKill()
 		{
 			this.DropItems(new Rectangle(Position.X * 16, Position.Y * 16, 32, 32));
-		}
-
-		public override void Update()
-		{
-			maxStoredItems = BaseMax + BaseMax * StackInc;
-
-			this.HandleUIFar();
 		}
 
 		public override TagCompound Save() => new TagCompound

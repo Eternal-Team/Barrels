@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="ReLogic">
       <HintPath>..\ModularTools\bin\Debug\ReLogic.dll</HintPath>
@@ -51,13 +52,19 @@
   <ItemGroup>
     <Compile Include="Items\Barrel.cs" />
     <Compile Include="Barrels.cs" />
-    <Compile Include="Items\BarrelUpgrade.cs" />
+    <Compile Include="Items\BaseUpgrade.cs" />
+    <Compile Include="Items\DSU.cs" />
+    <Compile Include="Items\PortableDSU.cs" />
     <Compile Include="Items\StackUpgrade.cs" />
     <Compile Include="Items\VoidUpgrade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TileEntities\TEBarrel.cs" />
+    <Compile Include="TileEntities\TEDSU.cs" />
     <Compile Include="Tiles\Barrel.cs" />
+    <Compile Include="Tiles\DSU.cs" />
     <Compile Include="UI\BarrelUI.cs" />
+    <Compile Include="UI\DSUUI.cs" />
+    <Compile Include="UI\PDSUUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheOneLibrary\TheOneLibrary.csproj">

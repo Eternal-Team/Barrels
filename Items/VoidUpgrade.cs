@@ -2,7 +2,7 @@
 
 namespace Barrels.Items
 {
-	public class VoidUpgrade : BarrelUpgrade
+	public class VoidUpgrade : BaseUpgrade
 	{
 		public override void SetStaticDefaults()
 		{

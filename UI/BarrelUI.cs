@@ -50,10 +50,10 @@ namespace Barrels.UI
 
 		public override void Load()
 		{
-			for (int i = 1; i < barrel.GetItems().Count; i++)
+			for (int i = 1; i < barrel.Items.Count; i++)
 			{
 				UIContainerSlot slot = new UIContainerSlot(barrel, i);
-				slot.CanInteract += (item, mouseItem) => (mouseItem.IsAir || mouseItem.modItem is BarrelUpgrade) && (!(item.modItem is StackUpgrade) || barrel.Items[0].stack <= barrel.maxStoredItems - ((StackUpgrade)item.modItem).data.GetInt("StackIncrease") * TEBarrel.BaseMax);
+				slot.CanInteract += (item, mouseItem) => (mouseItem.IsAir || mouseItem.modItem is BaseUpgrade) && (!(item.modItem is StackUpgrade) || barrel.Items[0].stack <= barrel.maxStoredItems - ((StackUpgrade)item.modItem).stackInc * TEBarrel.BaseMax);
 				items.Add(slot);
 			}
 		}

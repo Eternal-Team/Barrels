@@ -1,15 +1,27 @@
-﻿using Barrels.TileEntities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using Barrels.TileEntities;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace Barrels.Items
 {
-	public class StackUpgrade : BarrelUpgrade
+	public class StackUpgrade : BaseUpgrade
 	{
+		public override bool CloneNewInstances => false;
+
+		public override ModItem Clone(Item item)
+		{
+			StackUpgrade clone = (StackUpgrade)base.Clone(item);
+			clone.stackInc = stackInc;
+			return clone;
+		}
+
+		public int stackInc = 1;
+
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Stack Upgrade");
@@ -26,12 +38,25 @@ namespace Barrels.Items
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			int stackIncrease = data.GetInt("StackIncrease");
 			TooltipLine line = tooltips.FirstOrDefault(x => x.mod == "Terraria" && x.Name == "ItemName");
-			if (line != null) line.text += $" (x{stackIncrease})";
+			if (line != null) line.text += $" (x{stackInc})";
 			line = tooltips.FirstOrDefault(x => x.mod == "Terraria" && x.Name == "Tooltip0");
-			if (line != null) line.text = $"Increases barrel's storage {stackIncrease} times ({(TEBarrel.BaseMax * stackIncrease).ToString("N0", CultureInfo.InvariantCulture)} items)";
+			if (line != null) line.text = $"Increases barrel's storage {stackInc} times ({(TEBarrel.BaseMax * stackInc).ToString("N0", CultureInfo.InvariantCulture)} items)";
 		}
+
+		public override TagCompound Save() => new TagCompound
+		{
+			["StackInc"] = stackInc
+		};
+
+		public override void Load(TagCompound tag)
+		{
+			stackInc = tag.GetInt("StackInc");
+		}
+
+		public override void NetSend(BinaryWriter writer) => TagIO.Write(Save(), writer);
+
+		public override void NetRecieve(BinaryReader reader) => Load(TagIO.Read(reader));
 
 		public override void AddRecipes()
 		{
@@ -42,8 +67,7 @@ namespace Barrels.Items
 
 		public override void OnCraft(Recipe recipe)
 		{
-			((BarrelUpgrade)recipe.createItem.modItem).data = new TagCompound();
-			((BarrelUpgrade)recipe.createItem.modItem).data.Set("StackIncrease", 7);
+			stackInc = 7;
 		}
 	}
 }

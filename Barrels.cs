@@ -17,6 +17,7 @@ namespace Barrels
 		public const string ItemTexturePath = "Barrels/Textures/Items/";
 
 		[UI("TileEntity")] public Dictionary<ModTileEntity, GUI> TEUI = new Dictionary<ModTileEntity, GUI>();
+		public Dictionary<Guid, GUI> DSUUI = new Dictionary<Guid, GUI>();
 
 		public Barrels()
 		{
@@ -48,15 +49,16 @@ namespace Barrels
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
-			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+			int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
 
-			if (MouseTextIndex != -1)
+			if (InventoryIndex != -1)
 			{
-				layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
+				layers.Insert(InventoryIndex, new LegacyGameInterfaceLayer(
 					"Barrels: UI",
 					delegate
 					{
 						TEUI.Values.Draw();
+						DSUUI.Values.Draw();
 
 						return true;
 					},
